@@ -1,0 +1,20 @@
+{
+  "name": "Ethvent",
+  "version": "0.0.1",
+  "description": "Event management based on Ethereum blockchain",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alessio Maddaluno, Salvatore Nanni",
+  "license": "ISC",
+  "dependencies": {
+    "asciiart-logo": "^0.2.6",
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "ethereumjs-tx": "^2.1.2",
+    "ethers": "^4.0.41",
+    "express": "^4.17.1",
+    "web3": "^1.2.4"
+  }
+}

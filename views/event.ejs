@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+
+    <title>Ethvent - Prenotazione eventi con Ethereum</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    
+    <!-- Custom styles for this template -->
+    <link href="css/custom.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+          <a href="/" class="navbar-brand d-flex align-items-center">
+            <i class="fab fa-ethereum"></i>
+            <strong>ethvent</strong>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading"><%= event['event-title'] %></h1>
+          <p class="lead text-muted"><%= event['event-description'] %></p>
+          
+          <div id="status" class="alert" role="alert"></div>
+          
+          </p>
+        </div>
+      </section>
+
+      <div class="py-5 bg-light">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4 text-center">
+              <big><strong><i class="fas fa-clock"></i> Date e Ora:</strong></big>
+              <p class="text-muted event-date"><%= event['event-date']  %> <%= event['event-time'] %> </p>  
+            </div>
+            <div class="col-xs-12 col-md-4 text-center">
+              <big><strong><i class="fas fa-map-marker-alt"></i> Località:</strong></big>
+              <p class="text-muted"><%= event['event-place'] %></p>
+            </div>
+            <div class="col-md-4 text-center">
+              <big><strong><i class="fab fa-ethereum"></i> Prezzo prenotazione:</strong></big>
+              <p class="text-muted"><big> <%= event['event-price'] %>ETH</p>
+            </div>
+          </div>
+          <hr>
+      
+          <div class="row py-5">
+            <div class="col-xs-12 col-md-4 text-center">
+              <button name="submit" value="<%= event['event-id'] %>" type="submit" class="btn btn-success book-button" formaction="/book"><big><strong><i class="far fa-calendar"></i> Prenotazione</strong></big></button>
+            </div>
+            <div class="col-md-4 text-center">
+              <a href="/simulateTimeout?id=<%= event['event-id'] %>" class="btn btn-danger"><big><strong><i class="fas fa-bell"></i> Simula time out</strong></big></a>
+            </div>
+            
+            <div class="col-md-4 text-center">
+              <button name="submit"  value="<%= event['event-id'] %>" class="btn btn-warning checkin-button"><big><strong><i class="far fa-calendar-check"></i> Check-in</strong></big></button>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </main>
+
+    <footer class="text-muted">
+      <div class="container">
+        <p>Questo servizio è a scopo didattico. Tale applicazione è un progetto per l'esame di Reti di Calcolatori e Lab. dell'Università di Napoli Parthenope. È stato realizzato dagli studenti Maddaluno Alessio e Nanni Salvatore.</p>
+      </div>
+    </footer>
+    
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script>
+    <script type="text/javascript">
+
+      // Disable Metamask warning about net-refresh
+      ethereum.autoRefreshOnNetworkChange=false;
+    
+      $('#status').hide();
+      
+      // Check if Metamask is installed and the user gave access to the account
+      window.addEventListener('load', async () => {
+        if (window.ethereum) {
+          window.web3 = new Web3('<%= config['provider'] %>');
+          try {
+            await ethereum.enable();
+            bookingHandler();
+            checkinHandler();
+          } catch (err) {
+            $('#status').show();
+            $('#status').html('L\' utente ha negato l\'accesso a Metamask', err)
+          }
+        } else if (window.web3) {
+          window.web3 = new Web3(web3.currentProvider)
+          initPayButton()
+        } else {
+          $('#status').show();
+          $('#status').html('L\'estensione Metamask non è installata')
+        }
+      })      
+      
+      const bookingHandler = () => {
+        $('.book-button').click( async () => {
+          
+          // Set the contract ABI
+          const RegABI = [{inputs:[{internalType:"uint256",name:"eventBookingRate",type:"uint256"},{internalType:"address payable",name:"_checkInContract",type:"address"}],payable:!1,stateMutability:"nonpayable",type:"constructor"},{constant:!1,inputs:[],name:"book",outputs:[],payable:!0,stateMutability:"payable",type:"function"},{constant:!0,inputs:[{internalType:"address",name:"_wallet",type:"address"}],name:"checkAlreadyBooked",outputs:[{internalType:"bool",name:"",type:"bool"}],payable:!1,stateMutability:"view",type:"function"},{constant:!1,inputs:[{internalType:"address",name:"_booked",type:"address"}],name:"checkBooking",outputs:[{internalType:"bool",name:"",type:"bool"}],payable:!1,stateMutability:"nonpayable",type:"function"},{constant:!1,inputs:[],name:"getEventDeposit",outputs:[{internalType:"uint256",name:"",type:"uint256"}],payable:!1,stateMutability:"nonpayable",type:"function"},{constant:!1,inputs:[],name:"bookingTimeout",outputs:[],payable:!1,stateMutability:"nonpayable",type:"function"},{constant:!0,inputs:[],name:"getBalance",outputs:[{internalType:"uint256",name:"",type:"uint256"}],payable:!1,stateMutability:"view",type:"function"}];
+          
+          // Convert the needed amount of eth to wei
+          const amountEth = web3.utils.toWei('<%= event['event-price'] %>');
+          
+          // Get instance of the contract
+          let contractReg = new web3.eth.Contract(RegABI, '<%= event['reg-address'] %>');
+        
+          // Display errors
+          var error=false;
+          try {
+            //Execute the transaction
+            await contractReg.methods.book().send({from: web3.givenProvider.selectedAddress,value:amountEth});
+          }catch(err){
+            error=true;
+            console.log(err.message);
+            $('#status').addClass("alert-danger");
+            $('#status').html(err.message.slice(err.message.indexOf("revert")+7))
+          }
+          finally{
+            $('#status').show();
+          }
+          if(!error){
+            $('#status').removeClass("alert-danger");
+            $('#status').addClass("alert-success");
+            $('#status').html("Prenotazione effettuata con successo");
+          }
+          
+        })} 
+
+        const checkinHandler = () => {
+        $('.checkin-button').click( async () => {
+          // Set the contract ABI
+          let CheckABI = [{inputs:[],payable:!1,stateMutability:"nonpayable",type:"constructor"},{payable:!0,stateMutability:"payable",type:"fallback"},{constant:!1,inputs:[{internalType:"address",name:"_contract",type:"address"}],name:"setRegister",outputs:[],payable:!1,stateMutability:"nonpayable",type:"function"},{constant:!1,inputs:[],name:"checkIn",outputs:[],payable:!1,stateMutability:"nonpayable",type:"function"},{constant:!1,inputs:[],name:"bookingTimeout",outputs:[],payable:!1,stateMutability:"nonpayable",type:"function"},{constant:!0,inputs:[],name:"getBalance",outputs:[{internalType:"uint256",name:"",type:"uint256"}],payable:!1,stateMutability:"view",type:"function"},{constant:!0,inputs:[],name:"getR",outputs:[{internalType:"address",name:"",type:"address"}],payable:!1,stateMutability:"view",type:"function"}];
+          // Get instance of the contract
+          let contractCheck = new web3.eth.Contract(CheckABI, '<%= event['chk-address'] %>');
+  
+          // Display errors
+          var error=false;
+          try {
+            //Execute the transaction
+            await contractCheck.methods.checkIn().send({from: web3.givenProvider.selectedAddress});
+          }catch(err){
+            error=true;
+            console.log(err.message);
+            $('#status').addClass("alert-danger");
+            $('#status').html(err.message.slice(err.message.indexOf("revert")+7))
+          }
+          finally{
+            $('#status').show();
+          }
+          if(!error){
+            $('#status').removeClass("alert-danger");
+            $('#status').addClass("alert-success");
+            $('#status').html("Check in effettuato con successo. Gli ether sono stati restituiti");
+          }
+          
+        })}
+    </script>
+
+  </body>
+</html>

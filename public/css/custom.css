@@ -1,0 +1,53 @@
+:root {
+  --jumbotron-padding-y: 3rem;
+  --ethvent-blue: #0facf3;
+}
+
+.bg-dark{
+  background-color:var(--ethvent-blue) !important;
+}
+
+
+.jumbotron {
+  padding-top: var(--jumbotron-padding-y);
+  padding-bottom: var(--jumbotron-padding-y);
+  margin-bottom: 0;
+  background-color: #fff;
+}
+
+
+.jumbotron p:last-child {
+  margin-bottom: 0;
+}
+
+.jumbotron-heading {
+  font-weight: 300;
+}
+
+.jumbotron .container {
+  max-width: 40rem;
+}
+
+/* Event List */
+
+.event-name > a{
+  color:var(--ethvent-blue);
+}
+.event-name > a:hover{
+  text-decoration: none;
+}
+
+
+/* Footer */
+
+footer {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+footer p {
+  margin-bottom: .30rem;
+}
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="it">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Ethvent - Crea Evento</title>
+
+    <!-- Bootstrap & Fontawesome -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+
+    <!-- Custom CSS -->
+    <link href="css/custom.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="navbar navbar-dark bg-dark box-shadow">
+            <div class="container d-flex justify-content-between">
+                <a href="/" class="navbar-brand d-flex align-items-center">
+                    <i class="fab fa-ethereum"></i>
+                    <strong>ethvent</strong>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main role="main">
+
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h1 class="jumbotron-heading">Crea un nuovo evento</h1>
+                <p class="lead text-muted">Compila il form e crea un nuovo evento</p>
+            </div>
+        </section>
+
+        <div class="py-5 bg-light">
+            <div class="container">
+
+                <% if(typeof(status) != 'undefined'){ %>
+                    <% if(status != 0){ %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= error %>
+                        </div>
+                        <% } %>
+
+                            <% if(status === 0){ %>
+                                <div class="alert alert-success" role="alert">
+                                    <%= error %>
+                                </div>
+                                <% } %>
+                                    <% } %>
+
+                                        <form action="/createEvent" method="post">
+                                            <div class="form-group row">
+                                                <label for="event-title" class="col-4 col-form-label">Titolo Evento</label>
+                                                <div class="col-8">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="fa fa-star"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input id="event-title" name="event-title" type="text" class="form-control" required="required" aria-describedby="event-titleHelpBlock">
+                                                    </div>
+                                                    <span id="event-titleHelpBlock" class="form-text text-muted">es. WCC 2020, Comicon 2020</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="event-date" class="col-4 col-form-label">Data</label>
+                                                <div class="col-8">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input id="event-date" name="event-date" type="date" class="form-control" required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="event-time" class="col-4 col-form-label">Ora</label>
+                                                <div class="col-8">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="fa fa-clock"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input id="event-time" name="event-time" type="time" class="form-control" required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="event-place" class="col-4 col-form-label">Luogo</label>
+                                                <div class="col-8">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="fa fa-map-marker"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input id="event-place" name="event-place" type="text" class="form-control" required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="event-description" class="col-4 col-form-label">Descrizione Evento</label>
+                                                <div class="col-8">
+                                                    <textarea id="event-description" name="event-description" cols="40" rows="5" class="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="event-place" class="col-4 col-form-label">Costo prenotazione</label>
+                                                <div class="col-8">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="fab fa-ethereum"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input id="event-price" name="event-price" step="0.0001" type="number" class="form-control" required="required">
+                                                    </div>
+                                                    <span id="event-titleHelpBlock" class="form-text text-muted">In Ethereum</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="offset-4 col-8">
+                                                    <button name="submit" type="submit" class="btn btn-primary">Crea Evento</button>
+                                                </div>
+                                            </div>
+                                        </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-muted">
+        <div class="container">
+            <p>Questo servizio è a scopo didattico. Tale applicazione è un progetto per l'esame di Reti di Calcolatori e Lab. dell'Università di Napoli Parthenope. È stato realizzato dagli studenti Maddaluno Alessio e Nanni Salvatore.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

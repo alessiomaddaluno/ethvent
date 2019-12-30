@@ -1,0 +1,5 @@
+{
+    "privateKey" : "PK_HERE",
+    "url_provider" : "http://localhost:8545",
+    "port": 3000
+}

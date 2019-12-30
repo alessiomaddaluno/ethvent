@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="it">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Ethvent - Prenotazione eventi con Ethereum</title>
+    
+    <!-- Bootstrap & Fontawesome -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+
+    <!-- Custom CSS -->
+    <link href="css/custom.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="navbar navbar-dark bg-dark box-shadow">
+            <div class="container d-flex justify-content-between">
+                <a href="/" class="navbar-brand d-flex align-items-center">
+                    <i class="fab fa-ethereum"></i>
+                    <strong>ethvent</strong>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main role="main">
+
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h1 class="jumbotron-heading">ethereum <i class="fas fa-heart"></i> events</h1>
+                <p class="lead text-muted">Prenotati agli eventi che desideri utilizzando Ethereum.</p>
+                <p>
+                    <a href="/createEvent" class="btn btn-warning my-2"><i class="fas fa-calendar-week"></i> Nuovo evento</a>
+                </p>
+            </div>
+        </section>
+
+        <div class="py-5 bg-light">
+            <div class="container">
+
+                <div class="row">
+
+                    <% if(events.length == 0) { %>
+                        <h2 style="margin:0 auto;">Non ci sono eventi disponibili</h2>
+                        <% } %>
+
+                            <% for(var i=0; i < events.length ; i++) { %>
+                                <div class="col-md-4">
+                                    <div class="card mb-4 box-shadow">
+                                        <div class="card-body">
+                                            <p class="card-text"> <strong class="event-name">
+                                <a href="/event?id=<%= events[i]['event-id'] %>"><%= events[i]['event-title'] %></a></strong>
+                                                <br>
+                                                <%= events[i]['event-description'] %>
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <p>
+                                                    <small class="text-muted">dove e quando:</small>
+                                                    <strong> <%= events[i]['event-place'] %> <br> <%= events[i]['event-date'] %> - <%= events[i]['event-time'] %></strong>
+                                                </p>
+                                                <h4><%= events[i]['event-price'] %> <i class="fab fa-ethereum"></i></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-muted">
+        <div class="container">
+            <p>Questo servizio è a scopo didattico. Tale applicazione è un progetto per l'esame di Reti di Calcolatori e Lab. dell'Università di Napoli Parthenope. È stato realizzato dagli studenti Maddaluno Alessio e Nanni Salvatore.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
