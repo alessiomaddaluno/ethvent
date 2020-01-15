@@ -1,13 +1,3 @@
-/*
-
-    More info about this project:
-    https://github.com/AlessioMaddalunoasdasdsasadd
-    
-TODO: 
-    - templating abi
-    - refactoring senza jquery
-*/
-
 const express = require('express');                     // Express framework for routing 
 const bodyParser = require('body-parser');              // Body parser for handle http requests
 const fs = require('fs');                               // Filesystem module
